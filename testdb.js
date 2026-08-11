@@ -1,4 +1,5 @@
 const db = require('./lib/db');
+const { generateSchedule } = require('./lib/scheduler');
 
 const staff = db.prepare('SELECT * FROM staff').all();
 console.log(staff);
@@ -11,6 +12,9 @@ console.log(pendingVisits);
 
 const schedulingInput = pendingVisits.map(p => ({ patientID: p.patientID, patientName: p.name, visitID: p.visitID, location: { lat: p.lat, lng: p.lng }, clinicalPriority: p.clinicalPriority }));
 console.log(schedulingInput);
+
+const finalSchedule = generateSchedule(nurses, schedulingInput);
+finalSchedule.forEach((p, i) => console.log(`${i + 1}. ${p.patientName} (${p.clinicalPriority})`));
 
 // Let's move to the second half of step 1: fetching every patient with a pending 
 // visit assigned to this same nurse. This one needs a slightly bigger join, 
