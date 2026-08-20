@@ -12,6 +12,3 @@ const schedule = generateSchedule(nurseStart, testPatients);
 
 schedule.forEach((p, i) => console.log(`${i + 1}. ${p.name} (${p.clinicalPriority})`));
 
-
-
-

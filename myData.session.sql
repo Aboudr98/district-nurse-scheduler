@@ -10,8 +10,8 @@ CREATE TABLE staff (
     name VARCHAR(100) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     passwordHash VARCHAR(255) NOT NULL,
-    role VARCHAR(50) NOT NULL
-);
+    role VARCHAR(50) NOT NULL   
+); //add a constraint to ensure that the role is either 'Admin' or 'Nurse'
 
 CREATE TABLE patient (
     patientID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -96,6 +96,7 @@ Insert INTO visit (patientID, nurseID, scheduleID, status) VALUES
 (5, 1, 1, 'pending'),
 (6, 2, 2, 'pending');
 
+SELECT visitID, sequencePosition, status FROM visit WHERE nurseID = 1;
 
 
 
