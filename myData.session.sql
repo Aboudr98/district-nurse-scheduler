@@ -99,4 +99,4 @@ Insert INTO visit (patientID, nurseID, scheduleID, status) VALUES
 SELECT visitID, sequencePosition, status FROM visit WHERE nurseID = 1;
 
 
-
+UPDATE staff SET passwordHash = '$2b$10$GHKwHaWCbwwfLOTBgQnAdOqQfYwJE61AlbCm9W.cTgcnsdB37K0i2' WHERE username = 'bob.smith';

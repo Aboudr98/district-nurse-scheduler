@@ -1,0 +1,27 @@
+const bcrypt = require('bcrypt');
+const db = require('../../../lib/db');
+import { NextResponse } from 'next/server';
+
+
+export async function POST(request) {
+    const { username, password } = await request.json();
+
+  // look up the staff member by username
+    const staffMember = db.prepare('SELECT * FROM staff WHERE username = ?').get(username);
+
+    // if no matching staff member exists, return a 401 failure response
+    if (!staffMember) {
+        return NextResponse.json({ message: 'Invalid username or password' }, { status: 401 });
+    }
+
+    // compare the submitted password against the stored hash using bcrypt.compare
+    const isPasswordValid = await bcrypt.compare(password, staffMember.passwordHash);
+
+    // if it doesn't match, return a 401 failure response
+    if (!isPasswordValid) {
+        return NextResponse.json({ message: 'Invalid username or password' }, { status: 401 });
+    }
+
+    // if it matches, return a success response, including the staff member's role
+    return NextResponse.json({ message: 'Login successful', role: staffMember.role }, { status: 200 });
+}
