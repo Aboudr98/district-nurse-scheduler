@@ -27,3 +27,16 @@ export async function POST(request) {
         //return a success response, including the new visitID
         return NextResponse.json({ message: 'Visit added successfully', visitID: visitResult.lastInsertRowid }, { status: 201 });
 }
+
+export async function PATCH(request) {
+  const { visitID } = await request.json();
+
+  const updateVisit = db.prepare('UPDATE visit SET status = ?, completedAt = ? WHERE visitID = ?');
+  const result = updateVisit.run('completed', new Date().toISOString(), visitID);
+
+  if (result.changes === 0) {
+    return NextResponse.json({ message: 'Visit not found or no changes made' }, { status: 404 });
+  }
+
+  return NextResponse.json({ message: 'Visit updated successfully as completed', visitID: visitID }, { status: 200 });
+}
