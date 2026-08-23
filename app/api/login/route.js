@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const db = require('../../../lib/db');
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 
 export async function POST(request) {
@@ -21,6 +23,14 @@ export async function POST(request) {
     if (!isPasswordValid) {
         return NextResponse.json({ message: 'Invalid username or password' }, { status: 401 });
     }
+
+    // create a signed toekn containing staffId and role
+    const token = jwt.sign({ staffID: staffMember.staffID, role: staffMember.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    // set the token as an httpOnly cookie
+
+    const cookieStore = await cookies();
+    cookieStore.set('token', token, { httpOnly: true, path: '/' });
 
     // if it matches, return a success response, including the staff member's role
     return NextResponse.json({ message: 'Login successful', role: staffMember.role }, { status: 200 });
