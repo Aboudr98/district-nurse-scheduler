@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 
 async function testHashing() {
-    const myPlaintextPassword = 'mySecretPassword';
+    const myPlaintextPassword = 'aliceSecurePassword';
     const saltRounds = 10;
     
     // Hash the password
