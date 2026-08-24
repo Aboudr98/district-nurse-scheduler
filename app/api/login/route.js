@@ -24,8 +24,8 @@ export async function POST(request) {
         return NextResponse.json({ message: 'Invalid username or password' }, { status: 401 });
     }
 
-    // create a signed toekn containing staffId and role
-    const token = jwt.sign({ staffID: staffMember.staffID, role: staffMember.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // create a signed token containing staffId and role
+    const token = jwt.sign({ staffID: staffMember.staffID, name: staffMember.name, role: staffMember.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     // set the token as an httpOnly cookie
 
