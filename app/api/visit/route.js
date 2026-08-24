@@ -1,7 +1,16 @@
 const db = require('../../../lib/db');
 import { NextResponse } from 'next/server';
+const { getSessionUser } = require('../../../lib/auth');
 
 export async function POST(request) {
+    const sessionUser = await getSessionUser();
+    
+    if (!sessionUser) {
+        return NextResponse.json({ message: 'Not logged in' }, { status: 401 });
+    }
+    if (sessionUser.role !== 'Admin') {
+        return NextResponse.json({ message: 'Not authorised' }, { status: 403 });
+    }
     const { patientID, nurseID, date, createdBy } = await request.json();
 
     // Step 1: check whether a schedule already exists for this nurse and date
@@ -29,6 +38,14 @@ export async function POST(request) {
 }
 
 export async function PATCH(request) {
+
+    const sessionUser = await getSessionUser();
+    if (!sessionUser) {
+        return NextResponse.json({ message: 'Not logged in' }, { status: 401 });
+    }
+    if (sessionUser.role !== 'Nurse') {
+        return NextResponse.json({ message: 'Not authorised' }, { status: 403 });
+    }
   const { visitID } = await request.json();
 
   const updateVisit = db.prepare('UPDATE visit SET status = ?, completedAt = ? WHERE visitID = ?');

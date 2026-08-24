@@ -1,8 +1,20 @@
 const db = require('../../../lib/db');
 const { generateSchedule } = require('../../../lib/scheduler');
 import { NextResponse } from 'next/server';
+const { getSessionUser } = require('../../../lib/auth');
 
 export async function POST(request) {
+
+    const sessionUser = await getSessionUser();
+
+    if (!sessionUser) {
+        return NextResponse.json({ message: 'Not logged in' }, { status: 401 });
+    }
+    
+    if (sessionUser.role !== 'Admin') {
+        return NextResponse.json({ message: 'Not authorised' }, { status: 403 });
+    }
+
     const { nurseID, date } = await request.json();
 
     const nurses = db.prepare('SELECT nurse.baseID, base.lat, base.lng FROM nurse INNER JOIN base ON nurse.baseID = base.baseID WHERE nurse.nurseID = ?').get(nurseID);
