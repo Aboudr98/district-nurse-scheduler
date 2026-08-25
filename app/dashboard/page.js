@@ -36,6 +36,13 @@ useEffect(() => {
                 <p>Welcome, {user.name}. You have administrative privileges.</p>
             </div>
         )}
+        
+        {user.role === 'Nurse' && ( 
+            <div>
+                <h2>Nurse Dashboard</h2>
+                <p>Welcome, {user.name}. You have nurse privileges.</p>
+            </div>
+        )}
       </div>
     ) : (
       <p>Loading user data...</p>
