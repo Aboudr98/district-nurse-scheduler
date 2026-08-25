@@ -104,3 +104,9 @@ UPDATE staff SET passwordHash = '$2b$10$GHKwHaWCbwwfLOTBgQnAdOqQfYwJE61AlbCm9W.c
 SELECT * FROM patient ORDER BY patientID DESC LIMIT 1;
 
 SELECT * FROM visit WHERE scheduleID = (SELECT scheduleID FROM schedule WHERE nurseID = 2 AND date = '2026-08-20');
+
+SELECT * FROM visit WHERE status = 'pending';
+
+SELECT * FROM visit WHERE visitID = 7;
+
+UPDATE staff SET passwordHash = '$2b$10$i2rK4gJ91JAIJw7jOBrvR.bV7cupaM2zonviARIACjw4eVEGwTJIO' WHERE username = 'alice.johnson';
