@@ -3,51 +3,45 @@ import { NextResponse } from 'next/server';
 const { getSessionUser } = require('../../../lib/auth');
 
 export async function POST(request) {
-    const sessionUser = await getSessionUser();
-    
-    if (!sessionUser) {
-        return NextResponse.json({ message: 'Not logged in' }, { status: 401 });
-    }
-    if (sessionUser.role !== 'Admin') {
-        return NextResponse.json({ message: 'Not authorised' }, { status: 403 });
-    }
-    const { patientID, nurseID, date, createdBy } = await request.json();
+  const sessionUser = await getSessionUser();
+  if (!sessionUser) {
+    return NextResponse.json({ message: 'Not logged in' }, { status: 401 });
+  }
+  if (sessionUser.role !== 'Admin') {
+    return NextResponse.json({ message: 'Not authorised' }, { status: 403 });
+  }
+  const { patientID, nurseID, date } = await request.json();
 
-    // Step 1: check whether a schedule already exists for this nurse and date
-    let schedule = db.prepare('SELECT * FROM schedule WHERE nurseID = ? AND date = ?').get(nurseID, date);
+  let schedule = db.prepare('SELECT * FROM schedule WHERE nurseID = ? AND date = ?').get(nurseID, date);
+  let scheduleID;
 
-    let scheduleID;
+  if (schedule) {
+    scheduleID = schedule.scheduleID;
+  } else {
+    const newSchedule = db.prepare('INSERT INTO schedule (nurseID, createdBy, date) VALUES (?, ?, ?)');
+    // FIX: was `createdBy` (undefined), now uses the logged-in Admin's own staffID
+    const result = newSchedule.run(nurseID, sessionUser.staffID, date);
+    scheduleID = result.lastInsertRowid;
+  }
 
-    if(schedule) {
-        // a schedule already exists, reuse its ID
-        scheduleID = schedule.scheduleID;
-     } else {
-            // create a new schedule
-            const newSchedule = db.prepare('INSERT INTO schedule (nurseID, createdBy, date) VALUES (?, ?, ?)');            
-            const result = newSchedule.run(nurseID, createdBy, date);
-            scheduleID = result.lastInsertRowid;
-        }
+  const insertVisit = db.prepare('INSERT INTO visit (patientID, nurseID, scheduleID) VALUES (?, ?, ?)');
+  const visitResult = insertVisit.run(patientID, nurseID, scheduleID);
 
-        // insert the visit itself, using patientID, nurseID, and the scheduleID from above
-
-        const insertVisit = db.prepare('INSERT INTO visit (patientID, nurseID, scheduleID) VALUES (?, ?, ?)');
-        const visitResult = insertVisit.run(patientID, nurseID, scheduleID);
-
-        //return a success response, including the new visitID
-        return NextResponse.json({ message: 'Visit added successfully', visitID: visitResult.lastInsertRowid }, { status: 201 });
+  return NextResponse.json({ message: 'Visit added successfully', visitID: visitResult.lastInsertRowid }, { status: 201 });
 }
 
 export async function PATCH(request) {
-
-    const sessionUser = await getSessionUser();
-    if (!sessionUser) {
-        return NextResponse.json({ message: 'Not logged in' }, { status: 401 });
-    }
-    if (sessionUser.role !== 'Nurse') {
-        return NextResponse.json({ message: 'Not authorised' }, { status: 403 });
-    }
+  const sessionUser = await getSessionUser();
+  if (!sessionUser) {
+    return NextResponse.json({ message: 'Not logged in' }, { status: 401 });
+  }
+  if (sessionUser.role !== 'Nurse') {
+    return NextResponse.json({ message: 'Not authorised' }, { status: 403 });
+  }
   const { visitID } = await request.json();
 
+  // RESTORED: this was accidentally replaced with schedule-creation code.
+  // This route's real job is marking a visit complete, using visitID only.
   const updateVisit = db.prepare('UPDATE visit SET status = ?, completedAt = ? WHERE visitID = ?');
   const result = updateVisit.run('completed', new Date().toISOString(), visitID);
 
