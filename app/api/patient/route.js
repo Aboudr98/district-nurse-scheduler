@@ -23,3 +23,18 @@ export async function POST(request) {
 
     return NextResponse.json({ message: 'Patient added successfully', patientID: result.lastInsertRowid }, { status: 201 });
 }
+
+export async function GET() {
+
+    const sessionUser = await getSessionUser();
+    
+    if (!sessionUser) {
+        return NextResponse.json({ message: 'Not logged in' }, { status: 401 });
+    }
+    if (sessionUser.role !== 'Admin') {
+        return NextResponse.json({ message: 'Not authorised' }, { status: 403 });
+    }
+
+    const patients = db.prepare('SELECT patient.patientID, patient.name FROM patient').all();
+    return NextResponse.json(patients, { status: 200 });
+}
