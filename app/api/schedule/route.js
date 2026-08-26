@@ -15,11 +15,27 @@ export async function POST(request) {
         return NextResponse.json({ message: 'Not authorised' }, { status: 403 });
     }
 
-    const { nurseID, date } = await request.json();
+        const { nurseID, date } = await request.json();
+        
+        let schedule = db.prepare('SELECT * FROM schedule WHERE nurseID = ? AND date = ?').get(nurseID, date);
+        
+        let scheduleID;
+
+//
+        if(schedule) {
+        // a schedule already exists, reuse its ID
+        scheduleID = schedule.scheduleID;
+     } else {
+            // create a new schedule
+            const newSchedule = db.prepare('INSERT INTO schedule (nurseID, createdBy, date) VALUES (?, ?, ?)');            
+            const result = newSchedule.run(nurseID, sessionUser.staffID, date);
+            scheduleID = result.lastInsertRowid;
+        }
+//
 
     const nurses = db.prepare('SELECT nurse.baseID, base.lat, base.lng FROM nurse INNER JOIN base ON nurse.baseID = base.baseID WHERE nurse.nurseID = ?').get(nurseID);
 
-    const pendingVisits = db.prepare('SELECT patient.name,patient.patientID, nurse.nurseID, visit.visitID, visit.status, patient.lat, patient.lng, patient.clinicalPriority FROM patient INNER JOIN visit ON patient.patientID = visit.patientID INNER JOIN nurse ON visit.nurseID = nurse.nurseID WHERE visit.nurseID = ? AND visit.status = \'pending\'').all(nurseID);
+    const pendingVisits = db.prepare('SELECT patient.name,patient.patientID, nurse.nurseID, visit.visitID, visit.status, patient.lat, patient.lng, patient.clinicalPriority FROM patient INNER JOIN visit ON patient.patientID = visit.patientID INNER JOIN nurse ON visit.nurseID = nurse.nurseID WHERE visit.scheduleID = ? AND visit.status = \'pending\'').all(scheduleID);
     console.log(pendingVisits);
 
     const schedulingInput = pendingVisits.map(p => ({ patientID: p.patientID, patientName: p.name, visitID: p.visitID, location: { lat: p.lat, lng: p.lng }, clinicalPriority: p.clinicalPriority }));
