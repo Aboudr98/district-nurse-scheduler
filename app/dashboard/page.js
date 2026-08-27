@@ -24,43 +24,43 @@ useEffect(() => {
 
     return (
 
-  <div>
-    <h1>Dashboard</h1>
+<div className="px-4 py-12">
+  <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+    <h1 className="text-2xl font-semibold mb-6 text-gray-900">Dashboard</h1>
     {user ? (
       <div>
-        <p>Staff ID: {user.staffID}</p>
-        <p>Role: {user.role}</p>
+
 
         {user.role === 'Admin' && (
   <div>
-    <h2>Admin Dashboard</h2>
-<p>Welcome back, {user.name}.</p>
-<p>Manage patients, visits, and schedules below.</p>
+<h2 className="text-xl font-semibold mb-2 text-gray-900">Admin Dashboard</h2>
+<p className="text-gray-600 mb-1">Welcome back, {user.name}.</p>
+<p className="text-gray-600 mb-4">Manage patients, visits, and schedules below.</p>
     {/* NEW: navigation links to Admin-facing pages, using next/link for client-side routing */}
     <nav>
-      <Link href="/patients/new">Register Patient</Link>
-      {" | "}
-      <Link href="/visits/new">Assign Visit</Link>
-      {" | "}
-      <Link href="/schedule/new">Generate Schedule</Link>
-    </nav>
+<nav className="flex gap-4">
+  <Link href="/patients/new" className="text-blue-600 hover:underline">Register Patient</Link>
+  <Link href="/visits/new" className="text-blue-600 hover:underline">Assign Visit</Link>
+  <Link href="/schedule/new" className="text-blue-600 hover:underline">Generate Schedule</Link>
+</nav>
+</nav>
   </div>
 )}
 {user.role === 'Nurse' && (
   <div>
-    <h2>Nurse Dashboard</h2>
-    <p>Welcome back, {user.name}.</p>
-    <p>View and manage your assigned visits below.</p>
+    <h2 className="text-xl font-semibold mb-2 text-gray-900">Nurse Dashboard</h2>
+    <p className="text-gray-600 mb-1">Welcome back, {user.name}.</p>
+    <p className="text-gray-600 mb-4">View and manage your assigned visits below.</p>
     {/* NEW: link to the Nurse's visit list */}
     <nav>
-      <Link href="/nurse/visits">My Visits</Link>
+      <Link href="/nurse/visits" className="text-blue-600 hover:underline">My Visits</Link>
     </nav>
   </div>
 )}
       </div>
     ) : (
-      <p>Loading user data...</p>
-    )}
+    <p className="text-gray-600">Loading user data...</p>    )}
+  </div>
   </div>
 );// useEffect hook to fetch user data on component mount
 }

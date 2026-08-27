@@ -5,8 +5,6 @@ import { useState, useEffect } from "react";
 export default function NurseVisitsPage() {
   const [visits, setVisits] = useState([]);
 
-  // MOVED: fetchVisits is now defined at the top level of the component,
-  // not nested inside useEffect, so markComplete can call it too.
   const fetchVisits = async () => {
     try {
       const response = await fetch("/api/visit/mine");
@@ -20,13 +18,10 @@ export default function NurseVisitsPage() {
     }
   };
 
-  // useEffect now just calls the function defined above, still only once on mount.
   useEffect(() => {
     fetchVisits();
   }, []);
 
-  // NEW: marks a visit complete via PATCH, then refetches the list
-  // so the page reflects the updated status.
   const markComplete = async (visitID) => {
     try {
       const response = await fetch("/api/visit", {
@@ -45,24 +40,38 @@ export default function NurseVisitsPage() {
     }
   };
 
-return (
-    <div>
-      <h2>My Visits</h2>
-      <ol>
-        {visits.map((visit) => (
-          <li key={visit.visitID}>
-            {visit.patientID} {visit.sequencePosition} {visit.name}{" "}
-            {visit.location} {visit.clinicalPriority}
-            {/* NEW: button to mark this specific visit complete */}
-            <button
-  onClick={() => markComplete(visit.visitID)}
-  className="ml-2 px-3 py-1 bg-blue-600 text-white rounded"
->
-  Mark Complete
-</button>
-          </li>
-        ))}
-      </ol>
+  return (
+    <div className="px-4 py-12">
+      <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-900">My Visits</h2>
+
+        {visits.length === 0 ? (
+          <p className="text-gray-600">No visits scheduled for today.</p>
+        ) : (
+          <ol className="flex flex-col gap-3">
+            {visits.map((visit) => (
+              <li
+                key={visit.visitID}
+                className="flex items-center justify-between border border-gray-200 rounded px-4 py-3"
+              >
+                <div className="text-gray-700">
+                  <span className="font-medium text-gray-900">
+                    {visit.sequencePosition}. {visit.name}
+                  </span>
+                  <span className="text-gray-500"> — {visit.location}</span>
+                  <span className="text-gray-500"> ({visit.clinicalPriority})</span>
+                </div>
+                <button
+                  onClick={() => markComplete(visit.visitID)}
+                  className="ml-4 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors whitespace-nowrap"
+                >
+                  Mark Complete
+                </button>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
     </div>
   );
 }
