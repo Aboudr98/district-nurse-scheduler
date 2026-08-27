@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function DashboardPage() {
     const [user, setUser] = useState(null);
@@ -31,18 +32,31 @@ useEffect(() => {
         <p>Role: {user.role}</p>
 
         {user.role === 'Admin' && (
-            <div>
-                <h2>Admin Dashboard</h2>
-                <p>Welcome, {user.name}. You have administrative privileges.</p>
-            </div>
-        )}
-        
-        {user.role === 'Nurse' && ( 
-            <div>
-                <h2>Nurse Dashboard</h2>
-                <p>Welcome, {user.name}. You have nurse privileges.</p>
-            </div>
-        )}
+  <div>
+    <h2>Admin Dashboard</h2>
+<p>Welcome back, {user.name}.</p>
+<p>Manage patients, visits, and schedules below.</p>
+    {/* NEW: navigation links to Admin-facing pages, using next/link for client-side routing */}
+    <nav>
+      <Link href="/patients/new">Register Patient</Link>
+      {" | "}
+      <Link href="/visits/new">Assign Visit</Link>
+      {" | "}
+      <Link href="/schedule/new">Generate Schedule</Link>
+    </nav>
+  </div>
+)}
+{user.role === 'Nurse' && (
+  <div>
+    <h2>Nurse Dashboard</h2>
+    <p>Welcome back, {user.name}.</p>
+    <p>View and manage your assigned visits below.</p>
+    {/* NEW: link to the Nurse's visit list */}
+    <nav>
+      <Link href="/nurse/visits">My Visits</Link>
+    </nav>
+  </div>
+)}
       </div>
     ) : (
       <p>Loading user data...</p>

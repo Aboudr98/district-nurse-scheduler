@@ -54,9 +54,12 @@ return (
             {visit.patientID} {visit.sequencePosition} {visit.name}{" "}
             {visit.location} {visit.clinicalPriority}
             {/* NEW: button to mark this specific visit complete */}
-            <button onClick={() => markComplete(visit.visitID)}>
-              Mark Complete
-            </button>
+            <button
+  onClick={() => markComplete(visit.visitID)}
+  className="ml-2 px-3 py-1 bg-blue-600 text-white rounded"
+>
+  Mark Complete
+</button>
           </li>
         ))}
       </ol>

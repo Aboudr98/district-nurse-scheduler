@@ -21,7 +21,6 @@ export async function POST(request) {
         
         let scheduleID;
 
-//
         if(schedule) {
         // a schedule already exists, reuse its ID
         scheduleID = schedule.scheduleID;
@@ -31,7 +30,6 @@ export async function POST(request) {
             const result = newSchedule.run(nurseID, sessionUser.staffID, date);
             scheduleID = result.lastInsertRowid;
         }
-//
 
     const nurses = db.prepare('SELECT nurse.baseID, base.lat, base.lng FROM nurse INNER JOIN base ON nurse.baseID = base.baseID WHERE nurse.nurseID = ?').get(nurseID);
 

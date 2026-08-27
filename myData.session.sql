@@ -110,3 +110,28 @@ SELECT * FROM visit WHERE status = 'pending';
 SELECT * FROM visit WHERE visitID = 7;
 
 UPDATE staff SET passwordHash = '$2b$10$i2rK4gJ91JAIJw7jOBrvR.bV7cupaM2zonviARIACjw4eVEGwTJIO' WHERE username = 'alice.johnson';
+
+SELECT visit.visitID, visit.nurseID, schedule.date, schedule.nurseID as scheduleNurseID
+FROM visit 
+INNER JOIN schedule ON visit.scheduleID = schedule.scheduleID;
+
+SELECT staff.staffID, staff.name, nurse.nurseID 
+FROM staff 
+INNER JOIN nurse ON staff.staffID = nurse.staffID;
+
+SELECT visit.visitID, visit.nurseID, schedule.date 
+FROM visit 
+INNER JOIN schedule ON visit.scheduleID = schedule.scheduleID
+WHERE schedule.date = '2026-08-26';
+
+SELECT schedule.scheduleID, schedule.nurseID, schedule.date, visit.visitID, visit.nurseID as visitNurseID
+FROM schedule
+LEFT JOIN visit ON visit.scheduleID = schedule.scheduleID
+ORDER BY schedule.scheduleID DESC
+LIMIT 10;
+
+SELECT * FROM schedule ORDER BY scheduleID DESC LIMIT 1;
+
+SELECT * FROM schedule WHERE nurseID = 1 AND date = '2026-08-26';
+
+SELECT visitID, status, completedAt FROM visit WHERE visitID = 11;
