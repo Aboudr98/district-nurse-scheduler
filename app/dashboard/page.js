@@ -38,10 +38,11 @@ useEffect(() => {
 <p className="text-gray-600 mb-4">Manage patients, visits, and schedules below.</p>
     {/* NEW: navigation links to Admin-facing pages, using next/link for client-side routing */}
     <nav>
-<nav className="flex gap-4">
-  <Link href="/patients/new" className="text-blue-600 hover:underline">Register Patient</Link>
-  <Link href="/visits/new" className="text-blue-600 hover:underline">Assign Visit</Link>
-  <Link href="/schedule/new" className="text-blue-600 hover:underline">Generate Schedule</Link>
+<nav className="flex flex-wrap gap-3">
+  <Link href="/patients/new" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium">Register Patient</Link>
+  <Link href="/visits/new" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium">Assign Visit</Link>
+  <Link href="/schedule/new" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium">Generate Schedule</Link>
+  <Link href="/schedule/all" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium">View All Schedules</Link>
 </nav>
 </nav>
   </div>
@@ -52,8 +53,9 @@ useEffect(() => {
     <p className="text-gray-600 mb-1">Welcome back, {user.name}.</p>
     <p className="text-gray-600 mb-4">View and manage your assigned visits below.</p>
     {/* NEW: link to the Nurse's visit list */}
-    <nav>
-      <Link href="/nurse/visits" className="text-blue-600 hover:underline">My Visits</Link>
+    
+    <nav className="flex flex-wrap gap-3">
+      <Link href="/nurse/visits" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium">My Visits</Link>
     </nav>
   </div>
 )}

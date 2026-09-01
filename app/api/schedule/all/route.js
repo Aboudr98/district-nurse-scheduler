@@ -15,18 +15,19 @@ export async function GET(request) {
   const today = new Date().toISOString().split('T')[0];
 
   const visits = db.prepare(`
-    SELECT 
-      staff.name AS nurseName, 
-      patient.name AS patientName, 
-      visit.sequencePosition, 
-      visit.status
-    FROM visit 
-    INNER JOIN schedule ON visit.scheduleID = schedule.scheduleID 
-    INNER JOIN nurse ON schedule.nurseID = nurse.nurseID 
-    INNER JOIN staff ON nurse.staffID = staff.staffID 
-    INNER JOIN patient ON visit.patientID = patient.patientID
-    WHERE schedule.date = ?
-  `).all(today);
+  SELECT 
+    visit.visitID,
+    staff.name AS nurseName, 
+    patient.name AS patientName, 
+    visit.sequencePosition, 
+    visit.status
+  FROM visit 
+  INNER JOIN schedule ON visit.scheduleID = schedule.scheduleID 
+  INNER JOIN nurse ON schedule.nurseID = nurse.nurseID 
+  INNER JOIN staff ON nurse.staffID = staff.staffID 
+  INNER JOIN patient ON visit.patientID = patient.patientID
+  WHERE schedule.date = ?
+`).all(today);
 
   return NextResponse.json(visits, { status: 200 });
 }
