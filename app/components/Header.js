@@ -2,13 +2,16 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Header() {
   // Holds the currently logged-in user's info (staffID, name, role),
   // or null if no one is logged in / not yet loaded.
   const [user, setUser] = useState(null);
   const router = useRouter();
+
+  // inside the component, alongside your other hooks:
+const pathName = usePathname();
 
   // On mount, ask the server who's logged in (if anyone), same pattern
   // as the dashboard page. This runs independently on every page that
@@ -32,7 +35,7 @@ export default function Header() {
     };
 
     fetchUser();
-  }, []);
+  }, [pathName]);
 
   // Calls the logout route to clear the session cookie, then sends
   // the user back to the login page and resets local state.
