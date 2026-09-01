@@ -50,6 +50,11 @@ export default function NewVisitPage() {
           onSubmit={async (e) => {
             try {
               e.preventDefault();
+              
+              if (!date) {
+                alert("Please select a date.");
+                return;
+              }
               const response = await fetch("/api/visit", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

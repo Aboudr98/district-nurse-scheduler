@@ -12,6 +12,10 @@ export async function POST(request) {
   }
   const { patientID, nurseID, date } = await request.json();
 
+  if (!nurseID || !date || !patientID) {
+  return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
+}
+
   let schedule = db.prepare('SELECT * FROM schedule WHERE nurseID = ? AND date = ?').get(nurseID, date);
   let scheduleID;
 

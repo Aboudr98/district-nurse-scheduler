@@ -89,7 +89,7 @@ export default function NewSchedulePage() {
             <h3 className="text-lg font-semibold mb-3 text-gray-900">Generated Schedule</h3>
             <ol className="list-decimal list-inside flex flex-col gap-1 text-gray-700">
               {generatedSchedule.map((visit) => (
-                <li key={visit.patientID}>{visit.patientName} - {visit.clinicalPriority}</li>
+                <li key={visit.visitID}>{visit.patientName} - {visit.clinicalPriority}</li>
               ))}
             </ol>
           </div>
