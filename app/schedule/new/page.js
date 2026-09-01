@@ -7,6 +7,7 @@ export default function NewSchedulePage() {
   const [selectedNurseID, setSelectedNurseID] = useState("");
   const [date, setDate] = useState("");
   const [generatedSchedule, setGeneratedSchedule] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchNurses = async () => {
@@ -30,8 +31,9 @@ export default function NewSchedulePage() {
         <form
           className="flex flex-col gap-4"
           onSubmit={async (e) => {
+            e.preventDefault();
+            setIsSubmitting(true);
             try {
-              e.preventDefault();
               const response = await fetch("/api/schedule", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -47,6 +49,8 @@ export default function NewSchedulePage() {
             } catch (error) {
               console.error("Error generating schedule:", error);
               alert("An error occurred while generating the schedule. Please try again.");
+            } finally {
+              setIsSubmitting(false);
             }
           }}
         >
@@ -78,9 +82,10 @@ export default function NewSchedulePage() {
 
           <button
             type="submit"
-            className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
+            disabled={isSubmitting}
+            className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors disabled:opacity-50"
           >
-            Generate Schedule
+            {isSubmitting ? "Generating..." : "Generate Schedule"}
           </button>
         </form>
 

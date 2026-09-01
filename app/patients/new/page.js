@@ -8,15 +8,18 @@ export default function NewPatientPage() {
     const [lat, setLat] = useState('');
     const [lng, setLng] = useState('');
     const [clinicalPriority, setClinicalPriority] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
     
 
     return (
+
 <div className="px-4 py-12">
   <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
     <h1 className="text-2xl font-semibold mb-6 text-gray-900">Add New Patient</h1>
 <form className="flex flex-col gap-4" onSubmit={async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
     try {
-                e.preventDefault();
                 const response = await fetch('/api/patient', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -39,7 +42,11 @@ export default function NewPatientPage() {
             catch (error) {
                 console.error('Error adding patient:', error);
                 alert('An error occurred while adding the patient. Please try again.'); 
-            }}}>
+            } finally {
+                setIsSubmitting(false);
+            }
+            
+            }}>
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">Name</label>
                     <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
@@ -72,7 +79,8 @@ export default function NewPatientPage() {
                     </select>
                 </div>
                 
-                <button type="submit" className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors">Add Patient</button>            </form>
+                <button type="submit" disabled= {isSubmitting} className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors">{isSubmitting ? 'Adding...' : 'Add Patient'}</button>            
+                </form>
         </div>
         </div>
     );

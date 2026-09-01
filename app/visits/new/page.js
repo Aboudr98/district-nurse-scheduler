@@ -10,6 +10,7 @@ export default function NewVisitPage() {
   const [selectedNurseID, setSelectedNurseID] = useState("");
 
   const [date, setDate] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -48,13 +49,15 @@ export default function NewVisitPage() {
         <form
           className="flex flex-col gap-4"
           onSubmit={async (e) => {
+            e.preventDefault();
+
+            if (!date) {
+              alert("Please select a date.");
+              return;
+            }
+
+            setIsSubmitting(true);
             try {
-              e.preventDefault();
-              
-              if (!date) {
-                alert("Please select a date.");
-                return;
-              }
               const response = await fetch("/api/visit", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -77,6 +80,8 @@ export default function NewVisitPage() {
             } catch (error) {
               console.error("Error assigning visit:", error);
               alert("An error occurred while assigning the visit. Please try again.");
+            } finally {
+              setIsSubmitting(false);
             }
           }}
         >
@@ -126,9 +131,10 @@ export default function NewVisitPage() {
 
           <button
             type="submit"
-            className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors"
+            disabled={isSubmitting}
+            className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors disabled:opacity-50"
           >
-            Assign Visit
+            {isSubmitting ? "Assigning..." : "Assign Visit"}
           </button>
         </form>
       </div>
