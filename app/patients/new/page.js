@@ -26,6 +26,7 @@ export default function NewPatientPage() {
                     body: JSON.stringify({ name, location, lat: parseFloat(lat), lng: parseFloat(lng), clinicalPriority }),
                 });
 
+
                 const data = await response.json();
                 if (response.ok) {
                     alert(`Patient added successfully with ID: ${data.patientID}`);
@@ -45,6 +46,7 @@ export default function NewPatientPage() {
             } finally {
                 setIsSubmitting(false);
             }
+
             
             }}>
                 <div className="flex flex-col gap-1">
@@ -56,15 +58,17 @@ export default function NewPatientPage() {
                     <label className="text-sm font-medium text-gray-700">Location</label>
                     <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
+
+                
                 
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">Latitude</label>
-                    <input type="text" value={lat} onChange={(e) => setLat(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="Must be within 53.35 to 53.55" value={lat} onChange={(e) => setLat(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-medium text-gray-700">Longitude</label>
-                    <input type="text" value={lng} onChange={(e) => setLng(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <input type="text" placeholder="Must be within -2.35 to -2.10" value={lng} onChange={(e) => setLng(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 
                 <div className="flex flex-col gap-1">

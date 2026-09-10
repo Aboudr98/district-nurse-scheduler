@@ -12,6 +12,22 @@ export async function GET(request) {
         return NextResponse.json({ message: 'Not authorised' }, { status: 403 });
     }
 
-    const nurses = db.prepare('SELECT nurse.nurseID, staff.name FROM nurse INNER JOIN staff ON nurse.staffID = staff.staffID').all();
+    //const nurses = db.prepare('SELECT nurse.nurseID, staff.name FROM nurse INNER JOIN staff ON nurse.staffID = staff.staffID').all();
+
+const queryResult = await db.execute({
+    sql: 'SELECT nurse.nurseID, staff.name FROM nurse INNER JOIN staff ON nurse.staffID = staff.staffID',
+    args: [],
+    });
+
+    const nurses = queryResult.rows;
+
+
+
+
+
+
     return NextResponse.json(nurses, { status: 200 });
+
+
+
 }
