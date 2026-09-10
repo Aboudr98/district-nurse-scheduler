@@ -134,4 +134,27 @@ SELECT * FROM schedule ORDER BY scheduleID DESC LIMIT 1;
 
 SELECT * FROM schedule WHERE nurseID = 1 AND date = '2026-08-26';
 
-SELECT visitID, status, completedAt FROM visit WHERE visitID = 11;
+SELECT visitID, status, completedAt FROM visit WHERE visitID = 11;  
+
+SELECT visit.visitID, visit.status, schedule.date, schedule.nurseID
+FROM visit
+INNER JOIN schedule ON visit.scheduleID = schedule.scheduleID
+WHERE schedule.nurseID = 1
+ORDER BY schedule.date DESC;
+
+SELECT scheduleID, nurseID, createdBy, date FROM schedule ORDER BY scheduleID DESC LIMIT 5;
+
+
+SELECT 
+  staff.name AS nurseName, 
+  patient.name AS patientName, 
+  visit.sequencePosition, 
+  visit.status
+FROM visit 
+INNER JOIN schedule ON visit.scheduleID = schedule.scheduleID 
+INNER JOIN nurse ON schedule.nurseID = nurse.nurseID 
+INNER JOIN staff ON nurse.staffID = staff.staffID 
+INNER JOIN patient ON visit.patientID = patient.patientID
+WHERE schedule.date = '2026-09-01';
+
+SELECT staffID, name, username, role FROM staff WHERE username LIKE 'p%';

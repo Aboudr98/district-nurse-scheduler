@@ -67,10 +67,10 @@ export default function AllSchedulesPage() {
               <div key={nurseName}>
                 <h3 className="text-lg font-semibold mb-2 text-gray-900">{nurseName}</h3>
                 <ol className="flex flex-col gap-2">
-                  {nurseVisits.map((visit, index) => (
+                  {nurseVisits.map((visit) => (
                     <li
-                      key={index}
-                      className="flex items-center justify-between border border-gray-200 rounded px-4 py-2"
+                    key={visit.visitID}
+                    className="flex items-center justify-between border border-gray-200 rounded px-4 py-2"
                     >
                       <span className="text-gray-700">{visit.patientName}</span>
                       <span

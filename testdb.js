@@ -21,8 +21,3 @@ finalSchedule.forEach((p, i) => {
   newSequencePositions.run(i + 1, p.visitID);
 });
 console.log('Updated sequence positions in the database.');
-
-// Let's move to the second half of step 1: fetching every patient with a pending 
-// visit assigned to this same nurse. This one needs a slightly bigger join, 
-// since patient data lives in the patient table, but the connection to 
-// "which nurse" and "which visit status" lives in visit.

@@ -79,7 +79,7 @@ export default function NewPatientPage() {
                     </select>
                 </div>
                 
-                <button type="submit" disabled= {isSubmitting} className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors">{isSubmitting ? 'Adding...' : 'Add Patient'}</button>            
+                <button type="submit" disabled= {isSubmitting} className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors disabled:opacity-50">{isSubmitting ? 'Adding...' : 'Add Patient'}</button>            
                 </form>
         </div>
         </div>
