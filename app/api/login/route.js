@@ -8,11 +8,16 @@ import { cookies } from 'next/headers';
 export async function POST(request) {
     const { username, password } = await request.json();
     
+
+    /* 
+    // look up the staff member by username
+    const staffMember = db.prepare('SELECT * FROM staff WHERE username = ?').get(username);
+    */
     const result = await db.execute({
         sql: 'SELECT * FROM staff WHERE username = ?',
         args: [username],
     });
-    
+
 const staffMember = result.rows[0];
 
     // if no matching staff member exists, return a 401 failure response
