@@ -5,18 +5,10 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function Header() {
-  // Holds the currently logged-in user's info (staffID, name, role),
-  // or null if no one is logged in / not yet loaded.
   const [user, setUser] = useState(null);
   const router = useRouter();
+  const pathName = usePathname();
 
-  // inside the component, alongside your other hooks:
-const pathName = usePathname();
-
-  // On mount, ask the server who's logged in (if anyone), same pattern
-  // as the dashboard page. This runs independently on every page that
-  // includes <Header />, since the header has no way to receive this
-  // information from a parent page directly.
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -25,8 +17,6 @@ const pathName = usePathname();
           const data = await response.json();
           setUser(data);
         } else {
-          // Not logged in (401) — this is expected on the login page,
-          // so we don't treat it as an error, just leave user as null.
           setUser(null);
         }
       } catch (error) {
@@ -37,8 +27,6 @@ const pathName = usePathname();
     fetchUser();
   }, [pathName]);
 
-  // Calls the logout route to clear the session cookie, then sends
-  // the user back to the login page and resets local state.
   const handleLogout = async () => {
     try {
       await fetch("/api/logout", { method: "POST" });
@@ -50,23 +38,21 @@ const pathName = usePathname();
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-      {/* App name/branding — always visible, links back to the dashboard */}
-      <Link href="/dashboard" className="text-lg font-semibold text-gray-900">
-        District Nurse Scheduler
+    <header className="bg-white border-b border-gray-200 px-4 sm:px-6 py-3 sm:py-4 flex flex-wrap justify-between items-center gap-2">
+      {/* Full name on larger screens, shortened on small screens to avoid wrapping */}
+      <Link href="/dashboard" className="text-base sm:text-lg font-semibold text-gray-900 whitespace-nowrap">
+        <span className="hidden sm:inline">District Nurse Scheduler</span>
+        <span className="sm:hidden">DNS</span>
       </Link>
 
-      {/* Only show user info + logout if someone is actually logged in.
-          On the login page (or before the fetch resolves), user is null,
-          so this whole block simply doesn't render. */}
       {user && (
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-600">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <span className="text-xs sm:text-sm text-gray-600 whitespace-nowrap">
             {user.name} ({user.role})
           </span>
           <button
             onClick={handleLogout}
-            className="text-sm text-blue-600 hover:underline"
+            className="text-xs sm:text-sm text-blue-600 hover:underline whitespace-nowrap"
           >
             Log out
           </button>
