@@ -26,9 +26,15 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-sm bg-white p-8 rounded-lg shadow-md">
+  <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-blue-50 via-slate-50 to-teal-50">
+    {/* Decorative background shapes — purely visual, no interactive content */}
+    <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-200 rounded-full opacity-30 blur-3xl"></div>
+    <div className="absolute bottom-[-15%] right-[-10%] w-[30rem] h-[30rem] bg-teal-200 rounded-full opacity-30 blur-3xl"></div>
+
+    <div className="relative flex items-center justify-center px-4 py-12 min-h-screen">
+      <div className="w-full max-w-sm bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-lg">
+      
+    
           <h1 className="text-2xl font-semibold mb-6 text-gray-900">Login</h1>
 
           {feedback && (

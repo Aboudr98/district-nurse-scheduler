@@ -70,10 +70,11 @@ export default function NurseVisitsPage() {
                   <span className="text-gray-500"> ({visit.clinicalPriority})</span>
                   <span className={visit.status === 'completed' ? 'bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs' : 'bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-xs'}> {visit.status}</span>
                 </div>
-
+                
                 {visit.status === 'pending' && (
-                  <button onClick={() => markComplete(visit.visitID)} className="ml-4 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors whitespace-nowrap"> Mark Complete </button>
-                )}
+                  <button onClick={() => markComplete(visit.visitID)} className="ml-4 px-3 py-1 bg-teal-600 text-white rounded hover:bg-teal-700 transition-colors whitespace-nowrap"> Mark Complete </button>
+                  )}
+
               </li>
             ))}
           </ol>

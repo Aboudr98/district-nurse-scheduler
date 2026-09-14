@@ -48,16 +48,14 @@ useEffect(() => {
   </div>
 )}
 {user.role === 'Nurse' && (
-  <div>
-    <h2 className="text-xl font-semibold mb-2 text-gray-900">Nurse Dashboard</h2>
-    <p className="text-gray-600 mb-1">Welcome back, {user.name}.</p>
-    <p className="text-gray-600 mb-4">View and manage your assigned visits below.</p>
-    {/* NEW: link to the Nurse's visit list */}
-    
-    <nav className="flex flex-wrap gap-3">
-      <Link href="/nurse/visits" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium">My Visits</Link>
-    </nav>
-  </div>
+<div>
+<h2 className="text-xl font-semibold mb-2 text-gray-900">Nurse Dashboard</h2>
+<p className="text-gray-600 mb-1">Welcome back, {user.name}.</p>
+<p className="text-gray-600 mb-4">View and manage your assigned visits below.</p>
+<nav className="flex flex-wrap gap-3">
+<Link href="/nurse/visits" className="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700 transition-colors text-sm font-medium">My Visits</Link>
+</nav>
+</div>
 )}
       </div>
     ) : (
