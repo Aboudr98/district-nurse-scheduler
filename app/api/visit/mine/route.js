@@ -23,7 +23,7 @@ export async function GET(request) {
     const today = new Date().toISOString().split('T')[0];
 
     const scheduleResult = await db.execute({
-        sql: 'SELECT visit.visitID, visit.patientID, visit.sequencePosition, visit.status, patient.name, patient.location, patient.clinicalPriority FROM visit INNER JOIN schedule ON visit.scheduleID = schedule.scheduleID INNER JOIN patient ON visit.patientID = patient.patientID WHERE visit.nurseID = ? AND schedule.date = ?',
+        sql: 'SELECT visit.visitID, visit.patientID, visit.sequencePosition, visit.status, patient.name, patient.location, patient.clinicalPriority FROM visit INNER JOIN schedule ON visit.scheduleID = schedule.scheduleID INNER JOIN patient ON visit.patientID = patient.patientID WHERE visit.nurseID = ? AND schedule.date = ? ORDER BY visit.sequencePosition',
         args: [findNurse.nurseID, today],
     });
 
