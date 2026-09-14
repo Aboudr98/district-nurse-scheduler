@@ -35,4 +35,5 @@ export async function GET(request) {
   const visits = visitsResult.rows;
 
   return NextResponse.json(visits, { status: 200 });
-}
+} //new code  
+

@@ -7,11 +7,9 @@ export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState(null);
   const router = useRouter();
 
-  // On page load, check if a session already exists.
-  // If so, redirect straight to the dashboard instead of showing the login form,
-  // since a logged-in user shouldn't be shown a login page again.
   useEffect(() => {
     const checkExistingSession = async () => {
       try {
@@ -19,7 +17,6 @@ export default function LoginPage() {
         if (response.ok) {
           router.push('/dashboard');
         }
-        // if not ok (401), do nothing — no session exists, show the login form as normal
       } catch (error) {
         console.error('Error checking existing session:', error);
       }
@@ -33,9 +30,21 @@ export default function LoginPage() {
       <div className="flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-sm bg-white p-8 rounded-lg shadow-md">
           <h1 className="text-2xl font-semibold mb-6 text-gray-900">Login</h1>
+
+          {feedback && (
+            <div className={`mb-4 px-4 py-2 rounded text-sm ${
+              feedback.type === 'error'
+                ? 'bg-red-50 text-red-700 border border-red-200'
+                : 'bg-green-50 text-green-700 border border-green-200'
+            }`}>
+              {feedback.text}
+            </div>
+          )}
+
           <form className="flex flex-col gap-4" onSubmit={async (e) => {
             e.preventDefault();
             setIsSubmitting(true);
+            setFeedback(null);
             try {
               const response = await fetch('/api/login', {
                 method: 'POST',
@@ -47,11 +56,11 @@ export default function LoginPage() {
               if (response.ok) {
                 router.push('/dashboard');
               } else {
-                alert(`Login failed: ${data.message}`);
+                setFeedback({ type: 'error', text: data.message });
               }
             } catch (error) {
               console.error('Error during login:', error);
-              alert('An error occurred during login. Please try again.');
+              setFeedback({ type: 'error', text: 'An error occurred during login. Please try again.' });
             } finally {
               setIsSubmitting(false);
             }

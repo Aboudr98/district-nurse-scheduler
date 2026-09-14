@@ -8,6 +8,7 @@ export default function NewSchedulePage() {
   const [date, setDate] = useState("");
   const [generatedSchedule, setGeneratedSchedule] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState(null);
 
   useEffect(() => {
     const fetchNurses = async () => {
@@ -28,11 +29,23 @@ export default function NewSchedulePage() {
   return (
     <div className="px-4 py-12">
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+
+        {feedback && (
+          <div className={`mb-4 px-4 py-2 rounded text-sm ${
+            feedback.type === 'error'
+              ? 'bg-red-50 text-red-700 border border-red-200'
+              : 'bg-green-50 text-green-700 border border-green-200'
+          }`}>
+            {feedback.text}
+          </div>
+        )}
+
         <form
           className="flex flex-col gap-4"
           onSubmit={async (e) => {
             e.preventDefault();
             setIsSubmitting(true);
+            setFeedback(null);
             try {
               const response = await fetch("/api/schedule", {
                 method: "POST",
@@ -43,12 +56,13 @@ export default function NewSchedulePage() {
 
               if (response.ok) {
                 setGeneratedSchedule(data.schedule);
+                setFeedback({ type: 'success', text: 'Schedule generated successfully.' });
               } else {
-                alert("Failed to generate schedule");
+                setFeedback({ type: 'error', text: data.message || 'Failed to generate schedule' });
               }
             } catch (error) {
               console.error("Error generating schedule:", error);
-              alert("An error occurred while generating the schedule. Please try again.");
+              setFeedback({ type: 'error', text: 'An error occurred while generating the schedule. Please try again.' });
             } finally {
               setIsSubmitting(false);
             }

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 export default function NurseVisitsPage() {
   const [visits, setVisits] = useState([]);
+  const [feedback, setFeedback] = useState(null);
 
   const fetchVisits = async () => {
     try {
@@ -30,13 +31,14 @@ export default function NurseVisitsPage() {
         body: JSON.stringify({ visitID }),
       });
       if (response.ok) {
+        setFeedback(null);
         fetchVisits();
       } else {
-        alert("Failed to mark visit complete");
+        setFeedback({ type: 'error', text: 'Failed to mark visit complete' });
       }
     } catch (error) {
       console.error("Error marking visit complete:", error);
-      alert("An error occurred. Please try again.");
+      setFeedback({ type: 'error', text: 'An error occurred. Please try again.' });
     }
   };
 
@@ -44,6 +46,12 @@ export default function NurseVisitsPage() {
     <div className="px-4 py-12">
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold mb-6 text-gray-900">My Visits</h2>
+
+        {feedback && (
+          <div className="mb-4 px-4 py-2 rounded text-sm bg-red-50 text-red-700 border border-red-200">
+            {feedback.text}
+          </div>
+        )}
 
         {visits.length === 0 ? (
           <p className="text-gray-600">No visits scheduled for today.</p>
@@ -56,7 +64,7 @@ export default function NurseVisitsPage() {
               >
                 <div className="text-gray-700">
                   <span className="font-medium text-gray-900">
-                    {visit.sequencePosition}. {visit.name} 
+                    {visit.sequencePosition}. {visit.name}
                   </span>
                   <span className="text-gray-500"> — {visit.location}</span>
                   <span className="text-gray-500"> ({visit.clinicalPriority})</span>
@@ -66,8 +74,6 @@ export default function NurseVisitsPage() {
                 {visit.status === 'pending' && (
                   <button onClick={() => markComplete(visit.visitID)} className="ml-4 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors whitespace-nowrap"> Mark Complete </button>
                 )}
-          
-
               </li>
             ))}
           </ol>

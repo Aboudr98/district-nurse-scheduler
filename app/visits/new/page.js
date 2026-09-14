@@ -11,6 +11,7 @@ export default function NewVisitPage() {
 
   const [date, setDate] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState(null);
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -46,17 +47,29 @@ export default function NewVisitPage() {
   return (
     <div className="px-4 py-12">
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
+
+        {feedback && (
+          <div className={`mb-4 px-4 py-2 rounded text-sm ${
+            feedback.type === 'error'
+              ? 'bg-red-50 text-red-700 border border-red-200'
+              : 'bg-green-50 text-green-700 border border-green-200'
+          }`}>
+            {feedback.text}
+          </div>
+        )}
+
         <form
           className="flex flex-col gap-4"
           onSubmit={async (e) => {
             e.preventDefault();
 
             if (!date) {
-              alert("Please select a date.");
+              setFeedback({ type: 'error', text: 'Please select a date.' });
               return;
             }
 
             setIsSubmitting(true);
+            setFeedback(null);
             try {
               const response = await fetch("/api/visit", {
                 method: "POST",
@@ -70,16 +83,16 @@ export default function NewVisitPage() {
               const data = await response.json();
 
               if (response.ok) {
-                alert(`Visit assigned successfully with ID: ${data.visitID}`);
+                setFeedback({ type: 'success', text: `Visit assigned successfully with ID: ${data.visitID}` });
                 setSelectedPatientID("");
                 setSelectedNurseID("");
                 setDate("");
               } else {
-                alert(`Failed to assign visit: ${data.message}`);
+                setFeedback({ type: 'error', text: data.message });
               }
             } catch (error) {
               console.error("Error assigning visit:", error);
-              alert("An error occurred while assigning the visit. Please try again.");
+              setFeedback({ type: 'error', text: 'An error occurred while assigning the visit. Please try again.' });
             } finally {
               setIsSubmitting(false);
             }
@@ -141,3 +154,4 @@ export default function NewVisitPage() {
     </div>
   );
 }
+
