@@ -56,24 +56,28 @@ export default function NewPatientPage() {
                     }
                 }}>
                     <div className="flex flex-col gap-1">
-                        <label className="text-sm font-medium text-gray-700">Name</label>
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <label htmlFor="name" className="text-sm font-medium text-gray-700">Name</label>
+                        <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
+                    
                     <div className="flex flex-col gap-1">
-                        <label className="text-sm font-medium text-gray-700">Location</label>
-                        <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <label htmlFor="location" className="text-sm font-medium text-gray-700">Location</label>
+                        <input id="location" type="text" value={location} onChange={(e) => setLocation(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
+                    
                     <div className="flex flex-col gap-1">
-                        <label className="text-sm font-medium text-gray-700">Latitude</label>
-                        <input type="text" placeholder="Must be within 53.35 to 53.55" value={lat} onChange={(e) => setLat(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <label htmlFor="lat" className="text-sm font-medium text-gray-700">Latitude</label>
+                        <input id="lat" type="text" placeholder="Must be within 53.35 to 53.55" value={lat} onChange={(e) => setLat(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
+                    
                     <div className="flex flex-col gap-1">
-                        <label className="text-sm font-medium text-gray-700">Longitude</label>
-                        <input type="text" placeholder="Must be within -2.35 to -2.10" value={lng} onChange={(e) => setLng(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <label htmlFor="lng" className="text-sm font-medium text-gray-700">Longitude</label>
+                        <input id="lng" type="text" placeholder="Must be within -2.35 to -2.10" value={lng} onChange={(e) => setLng(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     </div>
+                    
                     <div className="flex flex-col gap-1">
-                        <label className="text-sm font-medium text-gray-700">Clinical Priority</label>
-                        <select value={clinicalPriority} onChange={(e) => setClinicalPriority(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <label htmlFor="clinicalPriority" className="text-sm font-medium text-gray-700">Clinical Priority</label>
+                        <select id="clinicalPriority" value={clinicalPriority} onChange={(e) => setClinicalPriority(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">Select Clinical Priority</option>
                             <option value="Low">Low</option>
                             <option value="Medium">Medium</option>
@@ -81,10 +85,11 @@ export default function NewPatientPage() {
                             <option value="Critical">Critical</option>
                         </select>
                     </div>
+                    
                     <button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors disabled:opacity-50">{isSubmitting ? 'Adding...' : 'Add Patient'}</button>
                 </form>
             </div>
         </div>
     );
 }
- 
+

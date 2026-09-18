@@ -68,7 +68,7 @@ export default function NurseVisitsPage() {
                   </span>
                   <span className="text-gray-500"> — {visit.location}</span>
                   <span className="text-gray-500"> ({visit.clinicalPriority})</span>
-                  <span className={visit.status === 'completed' ? 'bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs' : 'bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-xs'}> {visit.status}</span>
+                  <span className={visit.status === 'completed' ? 'bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs' : 'bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs'}> {visit.status}</span>
                 </div>
                 
                 {visit.status === 'pending' && (

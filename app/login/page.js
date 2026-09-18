@@ -33,7 +33,7 @@ export default function LoginPage() {
 
     <div className="relative flex items-center justify-center px-4 py-12 min-h-screen">
       <div className="w-full max-w-sm bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-lg">
-      
+
     
           <h1 className="text-2xl font-semibold mb-6 text-gray-900">Login</h1>
 
@@ -72,13 +72,13 @@ export default function LoginPage() {
             }
           }}>
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">Username</label>
-              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">Password</label>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
+              <label htmlFor="username" className="text-sm font-medium text-gray-700">Username</label>
+              <input id="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="..." />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label htmlFor="password" className="text-sm font-medium text-gray-700">Password</label>
+                <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
             <button
               type="submit"
               disabled={isSubmitting}

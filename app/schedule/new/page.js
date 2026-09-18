@@ -69,28 +69,30 @@ export default function NewSchedulePage() {
           }}
         >
           <h2 className="text-2xl font-semibold mb-2 text-gray-900">New Schedule</h2>
-
+          
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Nurse</label>
+            <label htmlFor="scheduleNurse" className="text-sm font-medium text-gray-700">Nurse</label>
             <select
-              value={selectedNurseID}
-              onChange={(e) => setSelectedNurseID(e.target.value)}
-              className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            id="scheduleNurse"
+            value={selectedNurseID}
+            onChange={(e) => setSelectedNurseID(e.target.value)}
+            className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">-- Select Nurse --</option>
               {nurses.map((nurse) => (
                 <option key={nurse.nurseID} value={nurse.nurseID}>{nurse.name}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Date</label>
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                ))}
+                </select>
+           </div>
+           
+           <div className="flex flex-col gap-1">
+            <label htmlFor="scheduleDate" className="text-sm font-medium text-gray-700">Date</label>
+            <input 
+            id="scheduleDate"
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
