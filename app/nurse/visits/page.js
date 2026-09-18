@@ -72,7 +72,7 @@ export default function NurseVisitsPage() {
                 </div>
                 
                 {visit.status === 'pending' && (
-                  <button onClick={() => markComplete(visit.visitID)} className="ml-4 px-3 py-1 bg-teal-600 text-white rounded hover:bg-teal-700 transition-colors whitespace-nowrap"> Mark Complete </button>
+                  <button onClick={() => markComplete(visit.visitID)} className="ml-4 px-3 py-1 bg-teal-700 text-white rounded hover:bg-teal-800 transition-colors whitespace-nowrap"> Mark Complete </button>
                   )}
 
               </li>
